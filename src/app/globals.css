@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bg-lines {
+  background-color: #ececf7;
+  opacity: 0.8;
+  background: repeating-linear-gradient(
+    45deg,
+    #4096ff,
+    #4096ff 80px,
+    #ececf7 20px,
+    #ececf7 400px
+  );
+}
