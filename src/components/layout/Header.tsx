@@ -13,7 +13,7 @@ import Spacer, { SpacerDirection } from "../commons/Spacer";
 
 const Header = () => {
   return (
-    <header className="sticky top-0 z-[1] w-full flex gap-4 items-center bg-white px-16 h-16">
+    <header className="sticky top-0 z-[100] w-full flex gap-4 items-center bg-white px-16 h-16">
       <Link href={"/"}>
         <Logo />
       </Link>

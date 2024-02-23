@@ -2,14 +2,14 @@ import ProductResponseDTO from "@/dtos/responses/product/product.response.dto";
 
 export const getProducts = (): ProductResponseDTO[] => {
   let ids: string[] = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 20; i++) {
     ids.push(i + "");
   }
 
   return ids.map((id) => {
     return {
       id: id,
-      name: "Product",
+      name: "Nike Dunk Low",
       category: "Apparel",
       description: "This is a good Product",
       medias: [
