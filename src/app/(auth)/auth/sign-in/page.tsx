@@ -71,15 +71,6 @@ const Page = () => {
           </div>
         </div>
         <div className="w-full flex flex-col items-center gap-2">
-          <Button
-            type="default"
-            block
-            size="large"
-            icon={<GoogleOutlined />}
-            loading={loading}
-          >
-            Sign In with Google
-          </Button>
           <Typography.Text>
             New to BuyBox? <Link href="/auth/sign-up">Sign Up</Link>
           </Typography.Text>
