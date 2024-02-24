@@ -15,10 +15,11 @@ import NotificationResponseDTO from "@/dtos/responses/notification/notification.
 
 interface IHeaderProps {
   data: NotificationResponseDTO[];
+  cartItems: number;
 }
 
 const Header = (props: IHeaderProps) => {
-  const { data } = props;
+  const { data, cartItems } = props;
   const [open, setOpen] = useState<boolean>(false);
 
   const items: MenuProps["items"] = [
@@ -55,7 +56,7 @@ const Header = (props: IHeaderProps) => {
         placeholder="Search BuyBox"
       />
       <Dropdown menu={{ items }} placement="bottomCenter" arrow open={open}>
-        <Badge dot={data.length > 0}>
+        <Badge dot={data.length > 0} size="small">
           <Button
             type="default"
             icon={<NotificationOutlined />}
@@ -66,7 +67,9 @@ const Header = (props: IHeaderProps) => {
         </Badge>
       </Dropdown>
       <Link href={"/cart"}>
-        <Button type="default" icon={<ShoppingCartOutlined />} />
+        <Badge dot={cartItems > 0} size="small">
+          <Button type="default" icon={<ShoppingCartOutlined />} />
+        </Badge>
       </Link>
       <Link href={"/"}>
         <Button type="default" icon={<MessageOutlined />} />
