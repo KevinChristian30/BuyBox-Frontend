@@ -2,6 +2,7 @@
 
 import ProductCard from "@/components/commons/ProductCard";
 import Spacer, { SpacerDirection } from "@/components/commons/Spacer";
+import ProductGrid from "@/components/domain/ProductGrid";
 import { Hero } from "@/components/ui/Hero";
 import ProductResponseDTO from "@/dtos/responses/product/product.response.dto";
 import { getProducts } from "@/services/product/product.list";
@@ -16,7 +17,7 @@ export default function Home() {
       <Hero
         products={products.map((product) => {
           return {
-            id: product.id + '',
+            id: product.id + "",
             title: product.name,
             price: product.price,
             thumbnail: product.medias[0].url,
@@ -30,17 +31,7 @@ export default function Home() {
         <Typography.Title>Browse BuyBox</Typography.Title>
         <Spacer direction={SpacerDirection.VERTICAL} space={50} />
 
-        <div className="flex items-center justify-center px-48 flex-wrap">
-          {products.map((product) => {
-            return (
-              <div className="m-4" key={product.id}>
-                <Link href={`/products/${product.id}`}>
-                  <ProductCard product={product} />
-                </Link>
-              </div>
-            );
-          })}
-        </div>
+        <ProductGrid products={products} />
       </div>
     </div>
   );
