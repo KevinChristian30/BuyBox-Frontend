@@ -65,7 +65,7 @@ const Header = (props: IHeaderProps) => {
           />
         </Badge>
       </Dropdown>
-      <Link href={"/"}>
+      <Link href={"/cart"}>
         <Button type="default" icon={<ShoppingCartOutlined />} />
       </Link>
       <Link href={"/"}>
