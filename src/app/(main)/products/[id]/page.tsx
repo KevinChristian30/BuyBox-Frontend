@@ -51,10 +51,15 @@ const Page = ({ params }: { params: { id: string } }) => {
                 {product?.description}
               </Descriptions.Item>
               <Descriptions.Item label="Price">
-                {product?.price + "ICP"}
+                {product?.price + " ICP"}
               </Descriptions.Item>
             </Descriptions>
-            <Button type="primary" size="large" shape="round" icon={<ShoppingCartOutlined />}>
+            <Button
+              type="primary"
+              size="large"
+              shape="round"
+              icon={<ShoppingCartOutlined />}
+            >
               Add to Cart
             </Button>
           </div>

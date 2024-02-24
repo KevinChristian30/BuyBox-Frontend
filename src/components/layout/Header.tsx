@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../commons/Logo";
 import Link from "next/link";
-import { Badge, Button, Input } from "antd";
+import { Badge, Button, Dropdown, Input, List, MenuProps } from "antd";
 import {
+  AlertOutlined,
   MessageOutlined,
   NotificationOutlined,
   SearchOutlined,
@@ -10,8 +11,39 @@ import {
 } from "@ant-design/icons";
 import ProfileCard from "../commons/ProfileCard";
 import Spacer, { SpacerDirection } from "../commons/Spacer";
+import NotificationResponseDTO from "@/dtos/responses/notification/notification.response.dto";
 
-const Header = () => {
+interface IHeaderProps {
+  data: NotificationResponseDTO[];
+}
+
+const Header = (props: IHeaderProps) => {
+  const { data } = props;
+  const [open, setOpen] = useState<boolean>(false);
+
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <List
+          className="w-[400px]"
+          pagination={{ position: "top", align: "end", pageSize: 2 }}
+          dataSource={data}
+          renderItem={(item, index) => (
+            <List.Item>
+              <List.Item.Meta
+                avatar={<AlertOutlined />}
+                title={<p className="text-primary font-bold">{item.title}</p>}
+                description={item.description}
+                className="text-primary"
+              />
+            </List.Item>
+          )}
+        />
+      ),
+    },
+  ];
+
   return (
     <header className="sticky top-0 z-[100] w-full flex gap-4 items-center bg-white px-16 h-16">
       <Link href={"/"}>
@@ -22,11 +54,17 @@ const Header = () => {
         size="large"
         placeholder="Search BuyBox"
       />
-      <Link href={"/"}>
-        <Badge dot>
-          <Button type="default" icon={<NotificationOutlined />} />
+      <Dropdown menu={{ items }} placement="bottomCenter" arrow open={open}>
+        <Badge dot={data.length > 0}>
+          <Button
+            type="default"
+            icon={<NotificationOutlined />}
+            onClick={() => {
+              setOpen(!open);
+            }}
+          />
         </Badge>
-      </Link>
+      </Dropdown>
       <Link href={"/"}>
         <Button type="default" icon={<ShoppingCartOutlined />} />
       </Link>
