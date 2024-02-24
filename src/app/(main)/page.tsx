@@ -6,6 +6,7 @@ import { Hero } from "@/components/ui/Hero";
 import ProductResponseDTO from "@/dtos/responses/product/product.response.dto";
 import { getProducts } from "@/services/product/product.list";
 import { Typography } from "antd";
+import Link from "next/link";
 
 export default function Home() {
   const products: ProductResponseDTO[] = getProducts();
@@ -15,6 +16,7 @@ export default function Home() {
       <Hero
         products={products.map((product) => {
           return {
+            id: product.id + '',
             title: product.name,
             price: product.price,
             thumbnail: product.medias[0].url,
@@ -32,7 +34,9 @@ export default function Home() {
           {products.map((product) => {
             return (
               <div className="m-4" key={product.id}>
-                <ProductCard product={product} />
+                <Link href={`/products/${product.id}`}>
+                  <ProductCard product={product} />
+                </Link>
               </div>
             );
           })}
