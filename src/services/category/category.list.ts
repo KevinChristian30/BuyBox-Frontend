@@ -5,15 +5,19 @@ export const getCategories = async (): Promise<CategoryResponseDTO[]> => {
 
   const data: CategoryResponseDTO[] = [
     {
+      id: BigInt(1),
       name: "Shoes",
     },
     {
+      id: BigInt(2),
       name: "Gadget",
     },
     {
+      id: BigInt(3),
       name: "Food",
     },
     {
+      id: BigInt(4),
       name: "Apparel",
     },
   ];
