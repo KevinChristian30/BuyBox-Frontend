@@ -71,9 +71,6 @@ const Header = (props: IHeaderProps) => {
           <Button type="default" icon={<ShoppingCartOutlined />} />
         </Badge>
       </Link>
-      <Link href={"/"}>
-        <Button type="default" icon={<MessageOutlined />} />
-      </Link>
       {/* <ProfileCard /> */}
       <Spacer direction={SpacerDirection.HORIZONTAL} space={16} />
       <Link href={"/auth/sign-in"}>

@@ -40,7 +40,6 @@ export default function RootLayout({
       {children}
       <Footer />
       <FloatButton
-        tooltip={<div>AI Curator</div>}
         icon={<CustomerServiceOutlined />}
         shape="circle"
         type="primary"

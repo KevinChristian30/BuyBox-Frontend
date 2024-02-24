@@ -131,6 +131,7 @@ const Page = () => {
                     alt="iamge"
                     height={100}
                     width={100}
+                    key={file as string}
                   />
                 );
               })}
