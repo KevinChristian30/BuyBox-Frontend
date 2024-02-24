@@ -55,7 +55,7 @@ const Header = (props: IHeaderProps) => {
         size="large"
         placeholder="Search BuyBox"
       />
-      <Dropdown menu={{ items }} placement="bottomCenter" arrow open={open}>
+      <Dropdown menu={{ items }} placement="bottom" arrow open={open}>
         <Badge dot={data.length > 0} size="small">
           <Button
             type="default"

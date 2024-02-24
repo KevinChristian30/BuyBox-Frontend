@@ -15,6 +15,7 @@
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "firebase": "^10.8.0",
     "framer-motion": "^11.0.6",
     "lucide-react": "^0.330.0",
     "next": "14.1.0",
@@ -24,7 +25,8 @@
     "react-query": "^3.39.3",
     "simplex-noise": "^4.0.1",
     "tailwind-merge": "^2.2.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@types/node": "^20",

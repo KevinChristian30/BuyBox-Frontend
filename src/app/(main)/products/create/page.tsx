@@ -3,6 +3,7 @@
 import Spacer, { SpacerDirection } from "@/components/commons/Spacer";
 import CategoryResponseDTO from "@/dtos/responses/categories/category.response.dto";
 import { getCategories } from "@/services/category/category.list";
+import uploadFile from "@/services/file/file.create";
 import {
   DatabaseOutlined,
   InboxOutlined,
@@ -11,6 +12,7 @@ import {
 } from "@ant-design/icons";
 import {
   Button,
+  Card,
   Form,
   Input,
   InputNumber,
@@ -18,7 +20,7 @@ import {
   Typography,
   Upload,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 
 const filterOption = (
   input: string,
@@ -27,7 +29,10 @@ const filterOption = (
 
 const Page = () => {
   const [loading, setLoading] = useState<boolean>();
-  const [categories, setCategories] = useState<CategoryResponseDTO[]>();
+  const [categories, setCategories] = useState<CategoryResponseDTO[]>([]);
+  const [files, setFiles] = useState<String[]>([]);
+
+  const hiddenFileInput = useRef<HTMLInputElement | null>(null);
 
   const fetchCategories = async () => {
     const response = await getCategories();
@@ -37,6 +42,13 @@ const Page = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const url = await uploadFile(e.target.files[0]);
+      setFiles([...files, url]);
+    }
+  };
 
   return (
     <div className="px-32 py-16 flex flex-col">
@@ -110,17 +122,35 @@ const Page = () => {
           >
             <InputNumber addonAfter="ICP" min={1} size="large" />
           </Form.Item>
-          <Form.Item
-            name="price"
-            label="Product Images"
-            className="w-full"
-          >
-            <Upload
-              action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-              listType="picture"
+          <Form.Item name="images" label="Product Images" className="w-full">
+            <div className="flex gap-2 flex-wrap w-full">
+              {files.map((file) => {
+                return (
+                  <img
+                    src={file as string}
+                    alt="iamge"
+                    height={100}
+                    width={100}
+                  />
+                );
+              })}
+            </div>
+
+            <input
+              type="file"
+              className="hidden"
+              style={{ display: 'none' }}
+              onChange={(e) => handleFileChange(e)}
+              ref={hiddenFileInput}
+            />
+
+            <Button
+              icon={<UploadOutlined />}
+              onClick={() => hiddenFileInput?.current?.click()}
+              size="large"
             >
-              <Button icon={<UploadOutlined />} size="large">Upload</Button>
-            </Upload>
+              Upload Image
+            </Button>
           </Form.Item>
 
           <Spacer direction={SpacerDirection.VERTICAL} space={20} />
