@@ -1,13 +1,11 @@
 "use client";
 
-import ProductCard from "@/components/commons/ProductCard";
 import Spacer, { SpacerDirection } from "@/components/commons/Spacer";
 import ProductGrid from "@/components/domain/ProductGrid";
 import { Hero } from "@/components/ui/Hero";
 import ProductResponseDTO from "@/dtos/responses/product/product.response.dto";
 import { getProducts } from "@/services/product/product.list";
 import { Typography } from "antd";
-import Link from "next/link";
 
 export default function Home() {
   const products: ProductResponseDTO[] = getProducts();

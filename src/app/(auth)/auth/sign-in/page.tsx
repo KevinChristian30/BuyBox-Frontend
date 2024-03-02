@@ -1,26 +1,57 @@
 "use client";
 
-import {
-  GoogleOutlined,
-  KeyOutlined,
-  LoginOutlined,
-  MailOutlined,
-} from "@ant-design/icons";
-import { Button, Card, Form, Input, Typography } from "antd";
+import SignInRequestDTO from "@/dtos/requests/auth/auth.sign-in.dto";
+import SignInResponseDTO from "@/dtos/responses/auth/auth.sign-in.dto";
+import signIn from "@/services/auth/auth.sign-in";
+import { KeyOutlined, LoginOutlined, MailOutlined } from "@ant-design/icons";
+import { Button, Card, Form, Input, Typography, notification } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useCookies } from "next-client-cookies";
+import tokenKey from "@/utils/constants";
 
 const Page = () => {
   const [loading, setLoading] = useState<boolean>();
+  const [api, contextHolder] = notification.useNotification();
+  const router = useRouter();
+  const cookies = useCookies();
+
+  const attemptSignIn = async (formValues: any) => {
+    const dto: SignInRequestDTO = {
+      email: formValues.email,
+      password: formValues.password,
+    };
+
+    try {
+      setLoading(true);
+      const response: SignInResponseDTO = await signIn(dto);
+      api.success({
+        message: "Sign in successful",
+        description: "Hang on, we're redirecting you.",
+        placement: "top",
+      });
+
+      cookies.set(tokenKey, response.token);
+      router.push("/");
+    } catch (error) {
+      api.error({
+        message: "Something Went Wrong",
+        description: "Please try again.",
+        placement: "top",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Card className="w-[280px] sm:w-[400px] shadow-2xl">
+      {contextHolder}
       <Form
         layout="vertical"
         className="flex w-full flex-col items-center gap-4"
-        onFinish={(values) => {
-          // Todo: Sign In
-        }}
+        onFinish={(values) => attemptSignIn(values)}
         disabled={loading}
         requiredMark={false}
       >
