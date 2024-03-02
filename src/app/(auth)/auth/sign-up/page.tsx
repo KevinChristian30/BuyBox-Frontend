@@ -1,27 +1,53 @@
 "use client";
 
-import {
-  IdcardOutlined,
-  KeyOutlined,
-  MailOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Button, Card, Form, Input, Typography } from "antd";
+import UserCreateRequestDTO from "@/dtos/requests/users/user.create.dto";
+import createUser from "@/services/user/user.create";
+import { KeyOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Card, Form, Input, Typography, notification } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Page = () => {
   const [loading, setLoading] = useState<boolean>();
+  const [api, contextHolder] = notification.useNotification();
+  const router = useRouter();
+
+  const signUp = async (formValues: any) => {
+    const dto: UserCreateRequestDTO = {
+      email: formValues.email,
+      full_name: formValues.fullName,
+      password: formValues.password,
+    };
+
+    try {
+      setLoading(true);
+      await createUser(dto);
+      api.success({
+        message: "Account Created",
+        description: "Please wait, we're navigating you.",
+        placement: "top",
+      });
+      router.push("/auth/sign-in");
+    } catch (error) {
+      api.error({
+        message: "Something Went Wrong",
+        description: "Please try again.",
+        placement: "top",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Card className="w-[280px] sm:w-[400px] shadow-2xl">
+      {contextHolder}
       <Form
         layout="vertical"
         className="flex w-full flex-col items-center gap-4"
         disabled={loading}
-        onFinish={(values) => {
-          // Todo: Sign Up
-        }}
+        onFinish={(values) => signUp(values)}
         requiredMark={false}
       >
         <Typography.Title>Sign Up</Typography.Title>
@@ -39,7 +65,7 @@ const Page = () => {
               placeholder="Email"
               size="large"
               prefix={<MailOutlined />}
-              type="email"  
+              type="email"
             />
           </Form.Item>
           <Form.Item
