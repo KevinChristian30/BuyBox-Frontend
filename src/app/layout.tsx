@@ -4,6 +4,7 @@ import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import NextTopLoader from "nextjs-toploader";
 import Colors from "@/constants";
+import { CookiesProvider } from "next-client-cookies/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +22,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AntdRegistry>
-          <NextTopLoader color={Colors.primary} zIndex={9999} showSpinner={false} />
-          {children}
+          <CookiesProvider>
+            <NextTopLoader
+              color={Colors.primary}
+              zIndex={9999}
+              showSpinner={false}
+            />
+            {children}
+          </CookiesProvider>
         </AntdRegistry>
       </body>
     </html>
