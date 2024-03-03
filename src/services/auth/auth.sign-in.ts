@@ -1,15 +1,16 @@
 import SignInResponseDTO from "@/dtos/responses/auth/auth.sign-in.dto";
 import axiosClient from "../axios";
 import SignInRequestDTO from "@/dtos/requests/auth/auth.sign-in.dto";
+import UserCreateResponseDTO from "@/dtos/responses/user/user.create.response.dto";
 
 export default async function signIn(
   dto: SignInRequestDTO
-): Promise<SignInResponseDTO> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  // const response = axiosClient.post("/sign-in", { ...dto });
-  const responseDTO: SignInResponseDTO = {
-    token: "randomToken",
+): Promise<UserCreateResponseDTO> {
+  const response = await axiosClient.post("/login", { ...dto });
+  const responseDTO: UserCreateResponseDTO = {
+    data: response.data.data,
+    token: response.data.token,
   };
+
   return responseDTO;
 }

@@ -32,11 +32,12 @@ const Page = () => {
         placement: "top",
       });
 
+      console.log(response);
       cookies.set(tokenKey, response.token);
       router.push("/");
     } catch (error) {
       api.error({
-        message: "Something Went Wrong",
+        message: "Invalid Credentials",
         description: "Please try again.",
         placement: "top",
       });
