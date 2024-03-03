@@ -1,9 +1,12 @@
 "use client";
 
 import UserCreateRequestDTO from "@/dtos/requests/users/user.create.dto";
+import UserCreateResponseDTO from "@/dtos/responses/user/user.create.response.dto";
 import createUser from "@/services/user/user.create";
+import tokenKey from "@/utils/constants";
 import { KeyOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Card, Form, Input, Typography, notification } from "antd";
+import { useCookies } from "next-client-cookies";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -12,6 +15,7 @@ const Page = () => {
   const [loading, setLoading] = useState<boolean>();
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter();
+  const cookies = useCookies();
 
   const signUp = async (formValues: any) => {
     const dto: UserCreateRequestDTO = {
@@ -22,13 +26,15 @@ const Page = () => {
 
     try {
       setLoading(true);
-      await createUser(dto);
+      const userData: UserCreateResponseDTO = await createUser(dto);
       api.success({
         message: "Account Created",
         description: "Please wait, we're navigating you.",
         placement: "top",
       });
-      router.push("/auth/sign-in");
+
+      cookies.set(tokenKey, userData.token);
+      router.push("/");
     } catch (error) {
       api.error({
         message: "Something Went Wrong",

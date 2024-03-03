@@ -1,13 +1,18 @@
 import UserCreateRequestDTO from "@/dtos/requests/users/user.create.dto";
 import axiosClient from "../axios";
+import UserCreateResponseDTO from "@/dtos/responses/user/user.create.response.dto";
 
-export default async function createUser(dto: UserCreateRequestDTO): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return Promise.resolve();
+export default async function createUser(
+  dto: UserCreateRequestDTO
+): Promise<UserCreateResponseDTO> {
   try {
-    const data = await axiosClient.post("/users", { ...dto });
-    console.log(data);
-    return Promise.resolve();
+    const response = await axiosClient.post("/register", { ...dto });
+    const responseDTO: UserCreateResponseDTO = {
+      data: response.data.data,
+      token: response.data.token,
+    };
+
+    return responseDTO;
   } catch (error) {
     return Promise.reject();
   }
