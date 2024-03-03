@@ -1,4 +1,3 @@
-import SignInResponseDTO from "@/dtos/responses/auth/auth.sign-in.dto";
 import axiosClient from "../axios";
 import SignInRequestDTO from "@/dtos/requests/auth/auth.sign-in.dto";
 import UserCreateResponseDTO from "@/dtos/responses/user/user.create.response.dto";

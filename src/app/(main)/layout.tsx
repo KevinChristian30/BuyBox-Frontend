@@ -1,5 +1,6 @@
 "use client";
 
+import IsAuthenticated from "@/components/guards/IsAuthenticated";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import NotificationResponseDTO from "@/dtos/responses/notification/notification.response.dto";
@@ -16,18 +17,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const { drawer, showDrawer } = useAIDrawer();
-  const [notifications, setNotifications] = useState<NotificationResponseDTO[]>([]);
+  const [notifications, setNotifications] = useState<NotificationResponseDTO[]>(
+    []
+  );
   const [cartItemCount, getCartItemCount] = useState<number | undefined>(0);
 
   const fetchNotifications = async () => {
     const response = await getNotifications();
     setNotifications(response);
-  }
+  };
 
   const fetchCartItemCount = async () => {
     const response = await getCartProducts();
-    getCartItemCount(response.length)
-  }
+    getCartItemCount(response.length);
+  };
 
   useEffect(() => {
     fetchNotifications();
@@ -35,8 +38,8 @@ export default function RootLayout({
   }, []);
 
   return (
-    <div className="">
-      <Header data={notifications} cartItems={1}/>
+    <IsAuthenticated>
+      <Header data={notifications} cartItems={1} />
       {children}
       <Footer />
       <FloatButton
@@ -46,6 +49,6 @@ export default function RootLayout({
         onClick={showDrawer}
       />
       {drawer()}
-    </div>
+    </IsAuthenticated>
   );
 }
