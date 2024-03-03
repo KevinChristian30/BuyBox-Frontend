@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../commons/Logo";
 import Link from "next/link";
-import { Badge, Button, Dropdown, Input, List, MenuProps } from "antd";
+import { Badge, Button, Dropdown, Input, List, MenuProps, Spin } from "antd";
 import {
   AlertOutlined,
   MessageOutlined,
@@ -12,6 +12,8 @@ import {
 import ProfileCard from "../commons/ProfileCard";
 import Spacer, { SpacerDirection } from "../commons/Spacer";
 import NotificationResponseDTO from "@/dtos/responses/notification/notification.response.dto";
+import { useCurrentUser } from "@/app/(main)/layout";
+import Loading from "../commons/Loading";
 
 interface IHeaderProps {
   data: NotificationResponseDTO[];
@@ -21,6 +23,8 @@ interface IHeaderProps {
 const Header = (props: IHeaderProps) => {
   const { data, cartItems } = props;
   const [open, setOpen] = useState<boolean>(false);
+
+  const { user, loading } = useCurrentUser();
 
   const items: MenuProps["items"] = [
     {
@@ -71,18 +75,25 @@ const Header = (props: IHeaderProps) => {
           <Button type="default" icon={<ShoppingCartOutlined />} />
         </Badge>
       </Link>
-      {/* <ProfileCard /> */}
       <Spacer direction={SpacerDirection.HORIZONTAL} space={16} />
-      <Link href={"/auth/sign-in"}>
-        <Button type="default" size="large" shape="round">
-          Sign In
-        </Button>
-      </Link>
-      <Link href={"/auth/sign-up"}>
-        <Button type="primary" size="large" shape="round">
-          Sign Up
-        </Button>
-      </Link>
+      {loading ? (
+        <Spin />
+      ) : user !== null ? (
+        <ProfileCard user={user} />
+      ) : (
+        <div className="flex gap-4">
+          <Link href={"/auth/sign-in"}>
+            <Button type="default" size="large" shape="round">
+              Sign In
+            </Button>
+          </Link>
+          <Link href={"/auth/sign-up"}>
+            <Button type="primary" size="large" shape="round">
+              Sign Up
+            </Button>
+          </Link>
+        </div>
+      )}
     </header>
   );
 };
