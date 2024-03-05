@@ -5,20 +5,17 @@ import CategoryResponseDTO from "@/dtos/responses/categories/category.response.d
 import { getCategories } from "@/services/category/category.list";
 import uploadFile from "@/services/file/file.create";
 import {
-  DatabaseOutlined,
   InboxOutlined,
   SaveOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
 import {
   Button,
-  Card,
   Form,
   Input,
   InputNumber,
   Select,
   Typography,
-  Upload,
 } from "antd";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 

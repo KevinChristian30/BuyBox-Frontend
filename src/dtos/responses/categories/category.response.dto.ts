@@ -1,5 +1,5 @@
 type CategoryResponseDTO = {
-  id: BigInt;
+  id: string;
   name: string;
 };
 
