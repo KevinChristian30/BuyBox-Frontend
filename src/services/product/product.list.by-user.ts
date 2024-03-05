@@ -1,11 +1,11 @@
 import ProductResponseDTO from "@/dtos/responses/product/product.response.dto";
 import axiosClient from "../axios";
 
-export const getProducts = async (
-  name: string = ""
+export const getProductsByStoreId = async (
+  id: string
 ): Promise<ProductResponseDTO[]> => {
   try {
-    const response = await axiosClient.get(`product?name=${name}`);
+    const response = await axiosClient.get(`user/${id}/product`);
     const dtos: ProductResponseDTO[] = response.data.map((product: any) => {
       return {
         id: product.id,

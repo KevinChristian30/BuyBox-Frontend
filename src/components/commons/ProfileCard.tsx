@@ -2,8 +2,10 @@
 
 import UserResponseDTO from "@/dtos/responses/user/user.response.dto";
 import becomeSeller from "@/services/auth/auth.become-seller";
-import { ShopOutlined, UserOutlined } from "@ant-design/icons";
+import tokenKey from "@/utils/constants";
+import { LogoutOutlined, ShopOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Dropdown, MenuProps, notification } from "antd";
+import { useCookies } from "next-client-cookies";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -18,6 +20,7 @@ const ProfileCard = (props: IProfileCardProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isStore, setIsStore] = useState<boolean>(user.is_store);
   const router = useRouter();
+  const cookies = useCookies();
 
   const attemptBecomeSeller = async () => {
     try {
@@ -60,11 +63,25 @@ const ProfileCard = (props: IProfileCardProps) => {
       );
     }
   };
+  
+  const signOut = () => {
+    cookies.remove(tokenKey);
+    router.push("/auth/sign-in");
+  }
 
   const items: MenuProps["items"] = [
     {
       key: "1",
       label: <ProfileDetails {...user} />,
+    },
+    {
+      key: "2",
+      label: (
+        <div className="flex gap-2" onClick={signOut}>
+          <LogoutOutlined />
+          <div>Sign Out</div>
+        </div>
+      ),
     },
   ];
 
