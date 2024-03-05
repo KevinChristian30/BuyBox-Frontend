@@ -21,6 +21,7 @@ export const getCartProducts = async (): Promise<ProductResponseDTO[]> => {
         },
       ],
       price: 100,
+      stock: 10
     };
   });
 };
