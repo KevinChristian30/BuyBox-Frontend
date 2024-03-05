@@ -1,7 +1,18 @@
+"use client";
+
 import React, { useState } from "react";
 import Logo from "../commons/Logo";
 import Link from "next/link";
-import { Badge, Button, Dropdown, Input, List, MenuProps, Spin } from "antd";
+import {
+  Badge,
+  Button,
+  Dropdown,
+  Form,
+  Input,
+  List,
+  MenuProps,
+  Spin,
+} from "antd";
 import {
   AlertOutlined,
   MessageOutlined,
@@ -14,6 +25,7 @@ import Spacer, { SpacerDirection } from "../commons/Spacer";
 import NotificationResponseDTO from "@/dtos/responses/notification/notification.response.dto";
 import { useCurrentUser } from "@/app/(main)/layout";
 import Loading from "../commons/Loading";
+import { useRouter } from "next/navigation";
 
 interface IHeaderProps {
   data: NotificationResponseDTO[];
@@ -23,8 +35,9 @@ interface IHeaderProps {
 const Header = (props: IHeaderProps) => {
   const { data, cartItems } = props;
   const [open, setOpen] = useState<boolean>(false);
-
   const { user, loading } = useCurrentUser();
+  const [query, setQuery] = useState<string>("");
+  const router = useRouter();
 
   const items: MenuProps["items"] = [
     {
@@ -49,16 +62,25 @@ const Header = (props: IHeaderProps) => {
     },
   ];
 
+  const searchProduct = () => {
+    router.push(`/products?name=${query}`);
+  };
+
   return (
     <header className="sticky top-0 z-[100] w-full flex gap-4 items-center bg-white px-16 h-16">
       <Link href={"/"}>
         <Logo />
       </Link>
-      <Input
-        addonBefore={<SearchOutlined />}
-        size="large"
-        placeholder="Search BuyBox"
-      />
+      <Form onFinish={searchProduct} className="w-full">
+        <Input
+          addonBefore={<SearchOutlined />}
+          size="large"
+          placeholder="Search BuyBox"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onSubmit={() => searchProduct()}
+        />
+      </Form>
       <Dropdown menu={{ items }} placement="bottom" arrow open={open}>
         <Badge dot={data.length > 0} size="small">
           <Button
