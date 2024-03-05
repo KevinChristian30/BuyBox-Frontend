@@ -14,13 +14,21 @@ function getTokenFromCookie(cookieName: string) {
   return null;
 }
 
-const token = getTokenFromCookie(tokenKey);
-
 const axiosClient = axios.create({
-  baseURL: "http://br5f7-7uaaa-aaaaa-qaaca-cai.localhost:4943",
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
+  baseURL: "http://by6od-j4aaa-aaaaa-qaadq-cai.localhost:4943",
 });
+
+axiosClient.interceptors.request.use(
+  async (config) => {
+    const token = await getTokenFromCookie(tokenKey);
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default axiosClient;
