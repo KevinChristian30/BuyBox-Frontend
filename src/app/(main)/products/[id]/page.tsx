@@ -37,7 +37,12 @@ const Page = ({ params }: { params: { id: string } }) => {
             <Carousel arrows autoplay>
               {product?.medias.map((product) => {
                 return (
-                  <img src={product.url} key={product.id} alt={product.id} className="w-[300px] aspect-square object-cover" />
+                  <img
+                    src={product.url}
+                    key={product.id}
+                    alt={product.id}
+                    className="w-[300px] aspect-square object-cover"
+                  />
                 );
               })}
             </Carousel>
@@ -57,14 +62,16 @@ const Page = ({ params }: { params: { id: string } }) => {
                 {product?.stock}
               </Descriptions.Item>
             </Descriptions>
-            <Button
-              type="primary"
-              size="large"
-              shape="round"
-              icon={<ShoppingCartOutlined />}
-            >
-              Add to Cart
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                type="primary"
+                size="large"
+                shape="round"
+                icon={<ShoppingCartOutlined />}
+              >
+                Add to Cart
+              </Button>
+            </div>
           </div>
         </div>
       )}

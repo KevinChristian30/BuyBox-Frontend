@@ -2,12 +2,13 @@ import MediaResponseDTO from "../media/media.response.dto";
 
 type ProductResponseDTO = {
   id: string;
-  name: string;
+  store_id: string;
   category: string;
+  name: string;
   description: string;
-  medias: MediaResponseDTO[];
   price: number;
   stock: number;
+  medias: MediaResponseDTO[];
 };
 
 export default ProductResponseDTO;

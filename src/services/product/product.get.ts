@@ -18,7 +18,8 @@ export const getProduct = async (id: string): Promise<ProductResponseDTO> => {
         };
       }),
       price: product.price,
-      stock: product.stock
+      stock: product.stock,
+      store_id: product.store_id
     };
   } catch (error) {
     return Promise.reject();

@@ -19,6 +19,8 @@ export const getMockProducts = (): ProductResponseDTO[] => {
         },
       ],
       price: 100,
+      stock: 10,
+      store_id: "asd"
     };
   });
 };

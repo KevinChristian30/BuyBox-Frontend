@@ -19,7 +19,8 @@ export const getProducts = async (
           };
         }),
         price: product.price,
-        stock: product.stock
+        stock: product.stock,
+        store_id: product.store_id
       };
     });
 
