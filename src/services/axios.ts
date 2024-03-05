@@ -1,3 +1,5 @@
+"use client";
+
 import tokenKey from "@/utils/constants";
 import axios from "axios";
 
@@ -17,7 +19,7 @@ const token = getTokenFromCookie(tokenKey);
 const axiosClient = axios.create({
   baseURL: "http://br5f7-7uaaa-aaaaa-qaaca-cai.localhost:4943",
   headers: {
-    'Authorization': `Bearer ${token}`,
+    Authorization: `Bearer ${token}`,
   },
 });
 
