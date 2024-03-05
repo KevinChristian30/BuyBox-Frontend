@@ -6,7 +6,7 @@ import ProductGrid from "@/components/domain/ProductGrid";
 import ProductResponseDTO from "@/dtos/responses/product/product.response.dto";
 import { getProductsByStoreId } from "@/services/product/product.list.by-user";
 import { ProductOutlined } from "@ant-design/icons";
-import { Button, Typography } from "antd";
+import { Button, Empty, Typography } from "antd";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useCurrentUser } from "../layout";
@@ -17,12 +17,12 @@ const Page = () => {
   const { user, loading: currentUserLoading } = useCurrentUser();
 
   const fetchProducts = async () => {
-    if (currentUserLoading || user === null) return;
+    if (currentUserLoading) return;
 
     try {
       setLoading(true);
       const response: ProductResponseDTO[] = await getProductsByStoreId(
-        user.id
+        user?.id ?? ""
       );
       setProducts(response);
     } catch (error) {
@@ -47,7 +47,13 @@ const Page = () => {
         </Link>
       </div>
       <Spacer direction={SpacerDirection.VERTICAL} space={32} />
-      {loading ? <Loading /> : <ProductGrid products={products} />}
+      {loading ? (
+        <Loading />
+      ) : products.length > 0 ? (
+        <ProductGrid products={products} />
+      ) : (
+        <Empty description="You don't have any products" />
+      )}
     </div>
   );
 };

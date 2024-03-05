@@ -30,6 +30,7 @@ const Page = () => {
   const [files, setFiles] = useState<String[]>([]);
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter();
+  const [form] = Form.useForm();
 
   const hiddenFileInput = useRef<HTMLInputElement | null>(null);
 
@@ -59,6 +60,15 @@ const Page = () => {
       media_urls: files.map((file) => file as string),
     };
 
+    if (files.length == 0) {
+      api.error({
+        message: "Error",
+        description: "A product must have at least one image",
+        placement: "top",
+      });
+      return;
+    }
+
     try {
       setLoading(true);
       createProduct(dto);
@@ -67,7 +77,8 @@ const Page = () => {
         description: "Product created",
         placement: "top",
       });
-      router.back();
+      form.resetFields();
+      setFiles([]);
     } catch (error) {
       api.error({
         message: "Error",
@@ -87,6 +98,7 @@ const Page = () => {
         onFinish={(values) => attemptCreateProduct(values)}
         disabled={loading}
         requiredMark={false}
+        form={form}
       >
         {contextHolder}
         <Typography.Title>Add Product</Typography.Title>
