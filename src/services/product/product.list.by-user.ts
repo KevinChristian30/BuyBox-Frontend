@@ -10,7 +10,7 @@ export const getProductsByStoreId = async (
       return {
         id: product.id,
         name: product.name,
-        category: product.category_id,
+        category: product.category_name,
         description: product.description,
         medias: product.medias.map((media: any) => {
           return {
@@ -19,6 +19,7 @@ export const getProductsByStoreId = async (
           };
         }),
         price: product.price,
+        stock: product.stock
       };
     });
 

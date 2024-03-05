@@ -13,14 +13,14 @@ const Page = ({ params }: { params: { id: string } }) => {
   const [product, setProduct] = useState<ProductResponseDTO>();
 
   const fetchProductDetail = async () => {
-    setLoading(true);
-    const response = await getProduct(
-      "asshafhiwuh-adaksjdha-asdlajkdklaj-alsdjjalsj"
-    );
-
-    setProduct(response);
-    console.log(response);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const response = await getProduct(id);
+      setProduct(response);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -32,12 +32,12 @@ const Page = ({ params }: { params: { id: string } }) => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="flex gap-8 items-center">
+        <div className="flex gap-8 items-center justify-start w-full">
           <div className="w-[400px] border border-solid border-gray-200 rounded-lg shadow-2xl">
             <Carousel arrows autoplay>
               {product?.medias.map((product) => {
                 return (
-                  <img src={product.url} key={product.id} alt={product.id} />
+                  <img src={product.url} key={product.id} alt={product.id} className="w-[300px] aspect-square object-cover" />
                 );
               })}
             </Carousel>
@@ -52,6 +52,9 @@ const Page = ({ params }: { params: { id: string } }) => {
               </Descriptions.Item>
               <Descriptions.Item label="Price">
                 {product?.price + " ICP"}
+              </Descriptions.Item>
+              <Descriptions.Item label="Stock">
+                {product?.stock}
               </Descriptions.Item>
             </Descriptions>
             <Button
