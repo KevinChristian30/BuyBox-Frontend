@@ -5,15 +5,33 @@ import ProductGrid from "@/components/domain/ProductGrid";
 import { Hero } from "@/components/ui/Hero";
 import ProductResponseDTO from "@/dtos/responses/product/product.response.dto";
 import { getProducts } from "@/services/product/product.list";
+import { getMockProducts } from "@/services/product/product.mock";
 import { Typography } from "antd";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const products: ProductResponseDTO[] = getProducts();
+  const [products, setProducts] = useState<ProductResponseDTO[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const data: ProductResponseDTO[] = await getProducts();
+      setProducts(data);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <div>
       <Hero
-        products={products.map((product) => {
+        products={getMockProducts().map((product) => {
           return {
             id: product.id + "",
             title: product.name,

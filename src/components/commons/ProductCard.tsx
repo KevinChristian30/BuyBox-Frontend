@@ -17,8 +17,9 @@ const ProductCard = (props: IProductCardProps) => {
         <Image
           alt={product.name}
           src={product.medias[0].url}
-          width={100}
-          height={100}
+          width={1000}
+          height={1000}
+          className="h-[200px] w-full object-cover"
         />
       }
       className="w-[200px] hover:cursor-pointer"

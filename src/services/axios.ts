@@ -15,7 +15,7 @@ function getTokenFromCookie(cookieName: string) {
 }
 
 const axiosClient = axios.create({
-  baseURL: "http://by6od-j4aaa-aaaaa-qaadq-cai.localhost:4943",
+  baseURL: "http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943",
 });
 
 axiosClient.interceptors.request.use(

@@ -3,11 +3,19 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'static.nike.com'
-      }
-    ]
-  }
+        protocol: "https",
+        hostname: "static.nike.com",
+      },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+      },
+      {
+        protocol: "https",
+        hostname: "buffer.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

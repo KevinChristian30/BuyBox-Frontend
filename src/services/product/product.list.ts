@@ -1,24 +1,27 @@
 import ProductResponseDTO from "@/dtos/responses/product/product.response.dto";
+import axiosClient from "../axios";
 
-export const getProducts = (): ProductResponseDTO[] => {
-  let ids: string[] = [];
-  for (let i = 0; i < 20; i++) {
-    ids.push(i + "");
+export const getProducts = async (): Promise<ProductResponseDTO[]> => {
+  try {
+    const response = await axiosClient.get("product");
+    const dtos: ProductResponseDTO[] = response.data.map((product: any) => {
+      return {
+        id: product.id,
+        name: product.name,
+        category: product.category_id,
+        description: product.description,
+        medias: product.medias.map((media: any) => {
+          return {
+            id: media.id,
+            url: media.url,
+          };
+        }),
+        price: product.price,
+      };
+    });
+
+    return dtos;
+  } catch (error) {
+    return Promise.reject();
   }
-
-  return ids.map((id) => {
-    return {
-      id: id,
-      name: "Nike Dunk Low",
-      category: "Apparel",
-      description: "This is a good Product",
-      medias: [
-        {
-          id: id,
-          url: "https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/9b26aa8f-0173-409b-b30a-7ce2d88573a4/custom-nike-dunk-low-by-you.png",
-        },
-      ],
-      price: 100,
-    };
-  });
 };
