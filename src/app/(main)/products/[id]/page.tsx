@@ -6,11 +6,13 @@ import { getProduct } from "@/services/product/product.get";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Button, Carousel, Descriptions } from "antd";
 import React, { useEffect, useState } from "react";
+import { useCurrentUser } from "../../layout";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [loading, setLoading] = useState<boolean>(true);
   const [product, setProduct] = useState<ProductResponseDTO>();
+  const { user, loading: currentUserLoading } = useCurrentUser();
 
   const fetchProductDetail = async () => {
     try {
@@ -63,14 +65,37 @@ const Page = ({ params }: { params: { id: string } }) => {
               </Descriptions.Item>
             </Descriptions>
             <div className="flex gap-2">
-              <Button
-                type="primary"
-                size="large"
-                shape="round"
-                icon={<ShoppingCartOutlined />}
-              >
-                Add to Cart
-              </Button>
+              {currentUserLoading ? (
+                <Loading />
+              ) : user?.id === product?.store_id ? (
+                <div className="flex gap-2">
+                  <Button
+                    type="primary"
+                    size="large"
+                    shape="round"
+                    icon={<ShoppingCartOutlined />}
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    type="primary"
+                    size="large"
+                    shape="round"
+                    icon={<ShoppingCartOutlined />}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  type="primary"
+                  size="large"
+                  shape="round"
+                  icon={<ShoppingCartOutlined />}
+                >
+                  Add to Cart
+                </Button>
+              )}
             </div>
           </div>
         </div>

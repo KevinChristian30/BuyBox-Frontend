@@ -21,7 +21,8 @@ export const getCartProducts = async (): Promise<ProductResponseDTO[]> => {
         },
       ],
       price: 100,
-      stock: 10
+      stock: 10,
+      store_id: ""
     };
   });
 };
