@@ -69,12 +69,12 @@ const Page = ({ params }: { params: { id: string } }) => {
         <div className="flex gap-8 items-center justify-start w-full">
           <div className="w-[400px] border border-solid border-gray-200 rounded-lg shadow-2xl">
             <Carousel arrows autoplay>
-              {product?.medias.map((product) => {
+              {product?.medias.map((image) => {
                 return (
                   <img
-                    src={product.url}
-                    key={product.id}
-                    alt={product.id}
+                    src={image}
+                    key={image}
+                    alt={product.name}
                     className="w-[300px] aspect-square object-cover"
                   />
                 );

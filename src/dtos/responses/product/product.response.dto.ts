@@ -8,7 +8,7 @@ type ProductResponseDTO = {
   description: string;
   price: number;
   stock: number;
-  medias: MediaResponseDTO[];
+  medias: string[];
 };
 
 export default ProductResponseDTO;

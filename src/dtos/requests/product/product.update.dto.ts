@@ -1,4 +1,6 @@
-type ProductCreateRequestDTO = {
+type ProductUpdateRequestDTO = {
+  id: string;
+  store_id: string;
   category_id: string;
   name: string;
   description: string;
@@ -7,4 +9,4 @@ type ProductCreateRequestDTO = {
   image_url: string[];
 };
 
-export default ProductCreateRequestDTO;
+export default ProductUpdateRequestDTO;

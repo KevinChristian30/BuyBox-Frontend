@@ -56,7 +56,7 @@ const Page = () => {
       description: values.description,
       price: values.price,
       stock: values.stock,
-      media_urls: files.map((file) => file as string),
+      image_url: files.map((file) => file as string),
     };
 
     if (files.length == 0) {

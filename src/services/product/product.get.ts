@@ -11,12 +11,7 @@ export const getProduct = async (id: string): Promise<ProductResponseDTO> => {
       name: product.name,
       category: product.category_name,
       description: product.description,
-      medias: product.medias.map((media: any) => {
-        return {
-          id: media.id,
-          url: media.url,
-        };
-      }),
+      medias: product.image_url,
       price: product.price,
       stock: product.stock,
       store_id: product.store_id

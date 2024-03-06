@@ -36,7 +36,7 @@ export default function Home() {
             id: product.id + "",
             title: product.name,
             price: product.price,
-            thumbnail: product.medias[0].url,
+            thumbnail: product.medias[0],
           };
         })}
       />

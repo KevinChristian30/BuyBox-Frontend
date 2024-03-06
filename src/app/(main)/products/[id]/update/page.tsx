@@ -1,8 +1,9 @@
 "use client";
 
+import { useCurrentUser } from "@/app/(main)/layout";
 import Loading from "@/components/commons/Loading";
 import Spacer, { SpacerDirection } from "@/components/commons/Spacer";
-import ProductCreateRequestDTO from "@/dtos/requests/product/product.create.dto";
+import ProductUpdateRequestDTO from "@/dtos/requests/product/product.update.dto";
 import CategoryResponseDTO from "@/dtos/responses/categories/category.response.dto";
 import ProductResponseDTO from "@/dtos/responses/product/product.response.dto";
 import { getCategories } from "@/services/category/category.list";
@@ -38,6 +39,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter();
   const [form] = Form.useForm();
+  const { user, loading: currentUserLoading } = useCurrentUser();
 
   const hiddenFileInput = useRef<HTMLInputElement | null>(null);
 
@@ -49,13 +51,15 @@ const Page = ({ params }: { params: { id: string } }) => {
   };
 
   const attemptUpdateProduct = async (values: any) => {
-    const dto: ProductCreateRequestDTO = {
+    const dto: ProductUpdateRequestDTO = {
+      id: id,
+      store_id: user!.id,
       name: values.product_name,
       category_id: values.category,
       description: values.description,
       price: values.price,
       stock: values.stock,
-      media_urls: files.map((file) => file as string),
+      image_url: files.map((file) => file as string),
     };
 
     if (files.length == 0) {
@@ -75,8 +79,6 @@ const Page = ({ params }: { params: { id: string } }) => {
         description: "Product saved",
         placement: "top",
       });
-      form.resetFields();
-      setFiles([]);
     } catch (error) {
       api.error({
         message: "Error",
@@ -93,7 +95,7 @@ const Page = ({ params }: { params: { id: string } }) => {
       setLoading(true);
       const response = await getProduct(id);
       setProduct(response);
-      setFiles(response.medias.map(media => media.url));
+      setFiles(response.medias);
     } catch (error) {
     } finally {
       setLoading(false);
@@ -112,10 +114,10 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="px-32 py-16 flex flex-col">
-      {loading ? (
+      {loading || currentUserLoading ? (
         <Loading />
-      ) : product === null ? (
-        <Empty description="Product doesn't exist" />
+      ) : product === null || user?.id != product.store_id ? (
+        <Empty description="This page doesn't exist" />
       ) : (
         <Form
           layout="vertical"
@@ -206,7 +208,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                   return (
                     <img
                       src={file as string}
-                      alt="iamge"
+                      alt="image"
                       height={100}
                       width={100}
                       key={file as string}
@@ -245,7 +247,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 icon={<SaveOutlined />}
                 loading={loading}
               >
-                Add Product
+                Save Product
               </Button>
             </div>
           </div>
