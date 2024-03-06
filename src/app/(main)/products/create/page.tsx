@@ -29,7 +29,6 @@ const Page = () => {
   const [categories, setCategories] = useState<CategoryResponseDTO[]>([]);
   const [files, setFiles] = useState<String[]>([]);
   const [api, contextHolder] = notification.useNotification();
-  const router = useRouter();
   const [form] = Form.useForm();
 
   const hiddenFileInput = useRef<HTMLInputElement | null>(null);

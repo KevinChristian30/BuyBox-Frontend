@@ -12,6 +12,7 @@ import { Button, Carousel, Descriptions, Empty, notification } from "antd";
 import React, { useEffect, useState } from "react";
 import { useCurrentUser } from "../../layout";
 import deleteProduct from "@/services/product/product.delete";
+import { useRouter } from "next/navigation";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -19,6 +20,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const [product, setProduct] = useState<ProductResponseDTO | null>(null);
   const { user, loading: currentUserLoading } = useCurrentUser();
   const [api, contextHolder] = notification.useNotification();
+  const router = useRouter();
 
   const fetchProductDetail = async () => {
     try {
@@ -61,7 +63,9 @@ const Page = ({ params }: { params: { id: string } }) => {
       {contextHolder}
       {loading ? (
         <Loading />
-      ) : product == null ? <Empty description="Product doesn't exist" /> : (
+      ) : product == null ? (
+        <Empty description="Product doesn't exist" />
+      ) : (
         <div className="flex gap-8 items-center justify-start w-full">
           <div className="w-[400px] border border-solid border-gray-200 rounded-lg shadow-2xl">
             <Carousel arrows autoplay>
@@ -103,6 +107,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                     type="primary"
                     icon={<ProductOutlined />}
                     loading={loading}
+                    onClick={() => router.push(`/products/${product.id}/update`)}
                   >
                     Update
                   </Button>
