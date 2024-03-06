@@ -18,7 +18,7 @@ const CartProduct = (props: ICardProductProps) => {
     >
       <div className="flex gap-4">
         <img
-          src={product.medias[0].url}
+          src={product.medias[0]}
           height={100}
           width={100}
           className="object-cover"
