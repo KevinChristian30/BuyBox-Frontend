@@ -17,6 +17,7 @@ import {
   NotificationOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
+  UnorderedListOutlined,
 } from "@ant-design/icons";
 import ProfileCard from "../commons/ProfileCard";
 import Spacer, { SpacerDirection } from "../commons/Spacer";
@@ -80,6 +81,9 @@ const Header = (props: IHeaderProps) => {
         <Badge dot={cartItems.length > 0} size="small">
           <Button type="default" icon={<ShoppingCartOutlined />} />
         </Badge>
+      </Link>
+      <Link href={user ? "/orders" : "/auth/sign-in"}>
+        <Button type="default" icon={<UnorderedListOutlined />} />
       </Link>
       <Spacer direction={SpacerDirection.HORIZONTAL} space={16} />
       {loading ? (
