@@ -74,9 +74,14 @@ const Page = ({ params }: { params: { id: string } }) => {
       setAddToCardLoading(true);
       const dto: CartProductAddDTO = {
         product_id: id,
-        quantity: quantity
-      }
+        quantity: quantity,
+      };
       await addProductToCart(dto);
+      api.success({
+        message: "Success",
+        description: "Product added to cart.",
+        placement: "top",
+      });
     } catch {
       api.error({
         message: "Something went wrong",

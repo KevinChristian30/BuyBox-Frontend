@@ -13,7 +13,7 @@ const CartProductList = (props: ICardProductListProps) => {
   return (
     <div className="flex flex-col gap-4">
       {products?.map((product) => {
-        return <CartProduct product={product.product} key={product.product.id} />;
+        return <CartProduct product={product} key={product.product.id} />;
       })}
     </div>
   );
