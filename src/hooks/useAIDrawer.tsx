@@ -45,9 +45,9 @@ const useAIDrawer = () => {
           alignment: ChatBubbleAlignment.LEFT,
           text: (
             <p>
-              Certainly, here are the product that i recommend:
-              <br />
-              <a
+              Certainly, here is the product that i recommend:
+              <br /><br />
+              <a className=""
                 href={`http://localhost:3000/products/${response[0].text}`}
               >{`http://localhost:3000/products/${response[0].text}`}</a>
             </p>

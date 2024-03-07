@@ -70,6 +70,10 @@ const Page = ({ params }: { params: { id: string } }) => {
   };
 
   const attemptAddToCart = async () => {
+    if (!user) {
+      router.push("/auth/sign-in");
+    }
+
     try {
       setAddToCardLoading(true);
       const dto: CartProductAddDTO = {
