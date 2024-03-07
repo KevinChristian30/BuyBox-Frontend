@@ -50,6 +50,7 @@ export default function RootLayout({
 
   const fetchCartItems = async () => {
     const response: CartResponseDTO[] = await getCartProducts();
+    console.log(response);
     setCartItems(response);
   };
 
