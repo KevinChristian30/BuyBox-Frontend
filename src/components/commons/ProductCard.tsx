@@ -14,7 +14,7 @@ const ProductCard = (props: IProductCardProps) => {
   return (
     <Card
       cover={
-        <Image
+        <img
           alt={product.name}
           src={product.medias[0]}
           width={1000}

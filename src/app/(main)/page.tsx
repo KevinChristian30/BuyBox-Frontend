@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <div>
       <Hero
-        products={getMockProducts().map((product) => {
+        products={products.map((product) => {
           return {
             id: product.id + "",
             title: product.name,
