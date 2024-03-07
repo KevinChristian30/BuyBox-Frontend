@@ -4,7 +4,6 @@ import Loading from "@/components/commons/Loading";
 import BillCard from "@/components/domain/BillCard";
 import CartProductList from "@/components/domain/CartProductList";
 import React, { useEffect, useState } from "react";
-import { useCurrentUser } from "../layout";
 import { Empty } from "antd";
 import CartResponseDTO from "@/dtos/responses/cart/cart.response.dto";
 import { getCartProducts } from "@/services/cart/cart.products.get";

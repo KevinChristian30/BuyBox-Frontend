@@ -4,15 +4,18 @@ import ChatBubble, {
   ChatBubbleAlignment,
   IChatBubbleProps,
 } from "@/components/domain/ChatBubble";
+import ChatResponseDTO from "@/dtos/responses/chat/chat.response.dto";
+import chat from "@/services/AI/ai.chat";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Card, Drawer, Empty, Form, Input } from "antd";
 import React, { useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const useAIDrawer = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<IChatBubbleProps[]>([]);
+  const [form] = Form.useForm();
 
   const showDrawer = () => {
     setDrawerOpen(true);
@@ -22,15 +25,45 @@ const useAIDrawer = () => {
     setDrawerOpen(false);
   };
 
-  const handleChat = (query: string) => {
-    setMessages([
-      ...messages,
-      { alignment: ChatBubbleAlignment.RIGHT, text: query },
-      { alignment: ChatBubbleAlignment.LEFT, text: "Ok" },
-    ]);
+  const handleChat = async (query: string) => {
+    let newMessages: IChatBubbleProps[] = [...messages];
+    newMessages.push({ alignment: ChatBubbleAlignment.RIGHT, text: query });
+
+    try {
+      setLoading(true);
+      const response: ChatResponseDTO[] = await chat({
+        message: query,
+      });
+
+      if (response.length == 1) {
+        newMessages.push({
+          alignment: ChatBubbleAlignment.LEFT,
+          text: response[0].text,
+        });
+      } else {
+        newMessages.push({
+          alignment: ChatBubbleAlignment.LEFT,
+          text: (
+            <p>
+              Certainly, here are the product that i recommend:
+              <br />
+              <a
+                href={`http://localhost:3000/products/${response[0].text}`}
+              >{`http://localhost:3000/products/${response[0].text}`}</a>
+            </p>
+          ),
+        });
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+
+    setMessages(newMessages);
+    form.resetFields();
   };
 
-  const form = () => {
+  const chatForm = () => {
     return (
       <Form
         layout="vertical"
@@ -40,6 +73,7 @@ const useAIDrawer = () => {
         }}
         disabled={loading}
         requiredMark={false}
+        form={form}
       >
         <Form.Item
           name="query"
@@ -88,7 +122,7 @@ const useAIDrawer = () => {
       >
         <div className="flex flex-col justify-end gap-4 h-full">
           {chats()}
-          {form()}
+          {chatForm()}
         </div>
       </Drawer>
     );

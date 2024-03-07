@@ -1,5 +1,5 @@
 import { Card } from "antd";
-import React from "react";
+import React, { ReactNode } from "react";
 
 export enum ChatBubbleAlignment {
   LEFT,
@@ -8,7 +8,7 @@ export enum ChatBubbleAlignment {
 
 export interface IChatBubbleProps {
   alignment: ChatBubbleAlignment;
-  text: string;
+  text: ReactNode;
 }
 
 const ChatBubble = (props: IChatBubbleProps) => {

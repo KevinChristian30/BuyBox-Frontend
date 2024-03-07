@@ -76,17 +76,6 @@ const Header = (props: IHeaderProps) => {
           onSubmit={() => searchProduct()}
         />
       </Form>
-      <Dropdown menu={{ items }} placement="bottom" arrow open={open}>
-        <Badge dot={cartItems.length > 0} size="small">
-          <Button
-            type="default"
-            icon={<NotificationOutlined />}
-            onClick={() => {
-              setOpen(!open);
-            }}
-          />
-        </Badge>
-      </Dropdown>
       <Link href={user ? "/cart" : "/auth/sign-in"}>
         <Badge dot={cartItems.length > 0} size="small">
           <Button type="default" icon={<ShoppingCartOutlined />} />
