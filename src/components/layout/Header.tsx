@@ -14,8 +14,6 @@ import {
   Spin,
 } from "antd";
 import {
-  AlertOutlined,
-  MessageOutlined,
   NotificationOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
@@ -24,18 +22,15 @@ import ProfileCard from "../commons/ProfileCard";
 import Spacer, { SpacerDirection } from "../commons/Spacer";
 import NotificationResponseDTO from "@/dtos/responses/notification/notification.response.dto";
 import { useCurrentUser } from "@/app/(main)/layout";
-import Loading from "../commons/Loading";
 import { useRouter } from "next/navigation";
 
 interface IHeaderProps {
   data: NotificationResponseDTO[];
-  cartItems: number;
 }
 
 const Header = (props: IHeaderProps) => {
-  const { data, cartItems } = props;
   const [open, setOpen] = useState<boolean>(false);
-  const { user, loading } = useCurrentUser();
+  const { user, cartItems, loading } = useCurrentUser();
   const [query, setQuery] = useState<string>("");
   const router = useRouter();
 
@@ -46,15 +41,15 @@ const Header = (props: IHeaderProps) => {
         <List
           className="w-[400px]"
           pagination={{ position: "top", align: "end", pageSize: 2 }}
-          dataSource={data}
+          dataSource={[]}
           renderItem={(item, index) => (
             <List.Item>
-              <List.Item.Meta
+              {/* <List.Item.Meta
                 avatar={<AlertOutlined />}
                 title={<p className="text-primary font-bold">{item.title}</p>}
                 description={item.description}
                 className="text-primary"
-              />
+              /> */}
             </List.Item>
           )}
         />
@@ -82,7 +77,7 @@ const Header = (props: IHeaderProps) => {
         />
       </Form>
       <Dropdown menu={{ items }} placement="bottom" arrow open={open}>
-        <Badge dot={data.length > 0} size="small">
+        <Badge dot={cartItems.length > 0} size="small">
           <Button
             type="default"
             icon={<NotificationOutlined />}
@@ -92,8 +87,8 @@ const Header = (props: IHeaderProps) => {
           />
         </Badge>
       </Dropdown>
-      <Link href={"/cart"}>
-        <Badge dot={cartItems > 0} size="small">
+      <Link href={user ? "/cart" : "/auth/sign-in"}>
+        <Badge dot={cartItems.length > 0} size="small">
           <Button type="default" icon={<ShoppingCartOutlined />} />
         </Badge>
       </Link>

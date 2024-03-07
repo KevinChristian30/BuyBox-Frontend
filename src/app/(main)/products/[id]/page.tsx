@@ -8,18 +8,29 @@ import {
   ProductOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { Button, Carousel, Descriptions, Empty, notification } from "antd";
+import {
+  Button,
+  Carousel,
+  Descriptions,
+  Empty,
+  InputNumber,
+  notification,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { useCurrentUser } from "../../layout";
 import deleteProduct from "@/services/product/product.delete";
 import { useRouter } from "next/navigation";
+import { addProductToCart } from "@/services/cart/cart.product.create";
+import CartProductAddDTO from "@/dtos/requests/cart/product.create.dto";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [loading, setLoading] = useState<boolean>(true);
+  const [addToCartLoading, setAddToCardLoading] = useState<boolean>(false);
   const [product, setProduct] = useState<ProductResponseDTO | null>(null);
-  const { user, loading: currentUserLoading } = useCurrentUser();
+  const [quantity, setQuantity] = useState<number>(1);
   const [api, contextHolder] = notification.useNotification();
+  const { user, loading: currentUserLoading } = useCurrentUser();
   const router = useRouter();
 
   const fetchProductDetail = async () => {
@@ -55,6 +66,25 @@ const Page = ({ params }: { params: { id: string } }) => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const attemptAddToCart = async () => {
+    try {
+      setAddToCardLoading(true);
+      const dto: CartProductAddDTO = {
+        product_id: id,
+        quantity: quantity
+      }
+      await addProductToCart(dto);
+    } catch {
+      api.error({
+        message: "Something went wrong",
+        description: "Please try again.",
+        placement: "top",
+      });
+    } finally {
+      setAddToCardLoading(false);
     }
   };
 
@@ -107,7 +137,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                     type="primary"
                     icon={<ProductOutlined />}
                     loading={loading}
-                    onClick={() => router.push(`/products/${product.id}/update`)}
+                    onClick={() =>
+                      router.push(`/products/${product.id}/update`)
+                    }
                   >
                     Update
                   </Button>
@@ -123,15 +155,24 @@ const Page = ({ params }: { params: { id: string } }) => {
                   </Button>
                 </div>
               ) : (
-                <Button
-                  type="primary"
-                  size="large"
-                  shape="round"
-                  icon={<ShoppingCartOutlined />}
-                  loading={loading}
-                >
-                  Add to Cart
-                </Button>
+                <div className="flex gap-4">
+                  <InputNumber
+                    min={1}
+                    size="large"
+                    value={quantity}
+                    onChange={(e: any) => setQuantity(e)}
+                  />
+                  <Button
+                    type="primary"
+                    size="large"
+                    shape="round"
+                    icon={<ShoppingCartOutlined />}
+                    loading={addToCartLoading}
+                    onClick={attemptAddToCart}
+                  >
+                    Add to Cart
+                  </Button>
+                </div>
               )}
             </div>
           </div>

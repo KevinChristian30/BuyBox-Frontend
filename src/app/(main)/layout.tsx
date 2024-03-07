@@ -3,6 +3,7 @@
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import AuthenticateResponseDTO from "@/dtos/responses/auth/auth.authenticate.dto";
+import CartResponseDTO from "@/dtos/responses/cart/cart.response.dto";
 import NotificationResponseDTO from "@/dtos/responses/notification/notification.response.dto";
 import UserResponseDTO from "@/dtos/responses/user/user.response.dto";
 import useAIDrawer from "@/hooks/useAIDrawer";
@@ -15,11 +16,13 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 type CurrentUserContextData = {
   user: UserResponseDTO | null;
+  cartItems: CartResponseDTO[];
   loading: boolean;
 };
 
 const CurrentUserContext = createContext<CurrentUserContextData>({
   user: null,
+  cartItems: [],
   loading: true,
 });
 
@@ -36,7 +39,7 @@ export default function RootLayout({
   const [notifications, setNotifications] = useState<NotificationResponseDTO[]>(
     []
   );
-  const [cartItemCount, getCartItemCount] = useState<number | undefined>(0);
+  const [cartItems, setCartItems] = useState<CartResponseDTO[]>([]);
   const [user, setUser] = useState<UserResponseDTO | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -45,9 +48,9 @@ export default function RootLayout({
     setNotifications(response);
   };
 
-  const fetchCartItemCount = async () => {
-    const response = await getCartProducts();
-    getCartItemCount(response.length);
+  const fetchCartItems = async () => {
+    const response: CartResponseDTO[] = await getCartProducts();
+    setCartItems(response);
   };
 
   const fetchCurrentUser = async () => {
@@ -65,13 +68,15 @@ export default function RootLayout({
 
   useEffect(() => {
     fetchNotifications();
-    fetchCartItemCount();
+    fetchCartItems();
     fetchCurrentUser();
   }, []);
 
   return (
-    <CurrentUserContext.Provider value={{ user: user, loading: loading }}>
-      <Header data={notifications} cartItems={1} />
+    <CurrentUserContext.Provider
+      value={{ user: user, cartItems: cartItems, loading: loading }}
+    >
+      <Header data={notifications} />
       {children}
       <Footer />
       <FloatButton

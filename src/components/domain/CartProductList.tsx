@@ -1,9 +1,10 @@
 import ProductResponseDTO from "@/dtos/responses/product/product.response.dto";
 import React from "react";
 import CartProduct from "./CartProduct";
+import CartResponseDTO from "@/dtos/responses/cart/cart.response.dto";
 
 interface ICardProductListProps {
-  products: ProductResponseDTO[];
+  products: CartResponseDTO[];
 }
 
 const CartProductList = (props: ICardProductListProps) => {
@@ -12,7 +13,7 @@ const CartProductList = (props: ICardProductListProps) => {
   return (
     <div className="flex flex-col gap-4">
       {products?.map((product) => {
-        return <CartProduct product={product} key={product.id} />;
+        return <CartProduct product={product.product} key={product.product.id} />;
       })}
     </div>
   );
