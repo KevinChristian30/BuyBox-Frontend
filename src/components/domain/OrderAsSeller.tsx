@@ -3,15 +3,19 @@
 import OrderResponseDTO from "@/dtos/responses/order/order.response.dto";
 import React, { useEffect, useState } from "react";
 import Loading from "../commons/Loading";
-import { Card, Empty } from "antd";
+import { Button, Card, Empty, notification } from "antd";
 import Spacer, { SpacerDirection } from "../commons/Spacer";
 import { getOrdersBySeller } from "@/services/order/order.seller.list";
 import { useCurrentUser } from "@/app/(main)/layout";
+import { CheckOutlined } from "@ant-design/icons";
+import updateOrder from "@/services/order/order.update";
 
 const OrderAsSeller = () => {
   const [loading, setLoading] = useState<boolean>(true);
+  const [confirmOrderLoading, setConfirmOrderLoading] = useState<boolean>(false);
   const [orders, setOrders] = useState<OrderResponseDTO[]>([]);
   const { user, loading: currentUserLoading } = useCurrentUser();
+  const [api, contextHolder] = notification.useNotification();
 
   const fetchOrders = async () => {
     try {
@@ -28,8 +32,30 @@ const OrderAsSeller = () => {
     fetchOrders();
   }, []);
 
+  const attemptConfirmOrder = async (order_id: string) => {
+    try {
+      setConfirmOrderLoading(true);
+      await updateOrder({ order_id: order_id, status: "Finished" });
+      api.success({
+        message: "Success",
+        description: "Order confirmed",
+        placement: "top",
+      });
+      window.location.reload();
+    } catch (error) {
+      api.error({
+        message: "Failed",
+        description: "Please try again.",
+        placement: "top",
+      });
+    } finally {
+      setConfirmOrderLoading(false);
+    }
+  };
+
   return (
     <div className="">
+      {contextHolder}
       {loading ? (
         <Loading />
       ) : orders.length == 0 ? (
@@ -55,11 +81,22 @@ const OrderAsSeller = () => {
                         className="object-cover"
                       ></img>
                       <div className="flex flex-col justify-between">
-                        <p>{order.product.description}</p>
                         <div className="">
                           <p>{`Quantity: ${order.quantity}`}</p>
                           <p>{`Total Price: ${order.product.price * order.quantity}`}</p>
                         </div>
+
+                        {order.status === "Pending" && (
+                          <Button
+                            type="primary"
+                            shape="round"
+                            icon={<CheckOutlined />}
+                            onClick={() => attemptConfirmOrder(order.id)}
+                            loading={confirmOrderLoading}
+                          >
+                            Confirm Order
+                          </Button>
+                        )}
                       </div>
                     </div>
                   )}
