@@ -8,6 +8,8 @@ interface IBillCardProps {
 const BillCard = (props: IBillCardProps) => {
   const { total } = props;
 
+  
+
   return (
     <Card className="h-fit w-[300px] shadow-2xl" title={`Total: ${total} ICP`}>
       <Button shape="round" size="large" type="primary" className="w-full">
